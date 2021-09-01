@@ -1,0 +1,21 @@
+services:
+  cloudflared:
+    image: crazymax/xbake-demo:foo
+    container_name: cloudflared
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        CLOUDFLARED_VERSION: 2021.8.2
+      x-bake:
+        tags:
+          - crazymax/xbake-demo:foo
+          - crazymax/xbake-demo:bar
+        platforms:
+          - linux/amd64
+          - linux/arm64
+        cache-to: type=registry,ref=crazymax/xbake-demo:cache
+    environment:
+      - "TZ=Europe/Paris"
+      - "TUNNEL_DNS_UPSTREAM=https://1.1.1.1/dns-query,https://1.0.0.1/dns-query"
+    restart: always
